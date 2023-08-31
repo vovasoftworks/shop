@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -69,6 +73,11 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'roles' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Role::class
+        ],
     ],
 
     /*
@@ -108,4 +117,6 @@ return [
 
     'password_timeout' => 10800,
 
+    'passport.personal_access_client.id' => 3,
+    'passport.personal_access_client.secret' => 'qLVGI0eFD59cNDNXIkZmPoyr2DV9d9lc5AAug7b3',
 ];

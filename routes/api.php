@@ -1,8 +1,14 @@
 <?php
 
-use App\Http\Controllers\NewsController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\UserLoginController;
+use App\Http\Controllers\Auth\UserRegisterController;
+use App\Http\Controllers\Products\GetProductController;
+use App\Http\Controllers\Products\DeleteProductController;
+use App\Http\Controllers\Products\UpdateProductController;
+use App\Http\Controllers\Products\CreateProductController;
+use App\Http\Controllers\Categories\DeleteCategoryController;
+use App\Http\Controllers\Categories\CreateCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +21,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('user')->group(function () {
+    Route::post('/register', UserRegisterController::class);
+    Route::post('/login', UserLoginController::class);
 });
 
+Route::middleware('auth:api')->group(function () {
+    Route::prefix('category')->group(function () {
+        Route::post('/', CreateCategoryController::class);
+        Route::delete('/{id}', DeleteCategoryController::class);
+    });
+    Route::prefix('product')->group(function () {
+        Route::post('/', CreateProductController::class);
+        Route::get('/{id}', GetProductController::class);
+        Route::patch('/{id}', UpdateProductController::class);
+        Route::delete('/{id}', DeleteProductController::class);
+    });
+});
 
-Route::get('/news', [NewsController::class, 'index']);
-Route::post('/news/{id}/like', [NewsController::class, 'like']);
-Route::post('/news/{id}/dislike', [NewsController::class, 'dislike']);
